@@ -15,9 +15,18 @@ from src.evaluation.experiment_callbacks import make_experiment_callbacks
 from src.ppo.config import PPO_CONFIG, PPO_TIMESTEPS
 
 
-def train_ppo(seed):
+
+
+def train_ppo(seed, total_timesteps=None, run_name="original"):
+
+    if total_timesteps is None:
+        total_timesteps = PPO_TIMESTEPS
+
+    create_project_directories()
+
     print("\n" + "=" * 50)
     print(f"STARTING PPO TRAINING | SEED {seed}")
+    print(f"TRAINING BUDGET: {total_timesteps:,}")
     print("=" * 50)
 
     env = make_space_invaders_env(
@@ -28,20 +37,20 @@ def train_ppo(seed):
     logger = ExperimentLogger(
         algorithm="ppo",
         seed=seed,
-        log_dir=LOG_DIR
+        log_dir=LOG_DIR,
+        run_name=run_name
     )
 
     eval_env = None
 
     try:
-        # Create evaluation and checkpoint callbacks
         callbacks, eval_env = make_experiment_callbacks(
             algorithm="ppo",
             seed=seed,
-            experiment_logger=logger
+            experiment_logger=logger,
+            run_name=run_name
         )
 
-        # Initialize PPO
         model = PPO(
             policy=PPO_CONFIG["policy"],
             env=env,
@@ -54,20 +63,24 @@ def train_ppo(seed):
             tensorboard_log=str(LOG_DIR / "tensorboard")
         )
 
-        print(f"\nTraining PPO for {PPO_TIMESTEPS:,} timesteps...")
-
         model.learn(
-            total_timesteps=PPO_TIMESTEPS,
+            total_timesteps=total_timesteps,
             callback=callbacks,
-            tb_log_name=f"ppo_seed_{seed}"
+            tb_log_name=f"ppo_seed_{seed}_{run_name}"
         )
 
-        # Save final model
-        model_path = PPO_MODEL_DIR / f"ppo_seed_{seed}_final"
+        filename = (
+            f"ppo_seed_{seed}_final"
+            if run_name == "original"
+            else f"ppo_seed_{seed}_{run_name}_final"
+        )
 
+        model_path = PPO_MODEL_DIR / filename
         model.save(str(model_path))
 
         print(f"\nFinal PPO model saved to: {model_path}.zip")
+
+        return model
 
     finally:
         env.close()
@@ -75,6 +88,7 @@ def train_ppo(seed):
         if eval_env is not None:
             eval_env.close()
 
+        logger.close()
 
 def main():
     create_project_directories()

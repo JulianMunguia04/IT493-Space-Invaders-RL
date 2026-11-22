@@ -15,9 +15,18 @@ from src.evaluation.experiment_callbacks import make_experiment_callbacks
 from src.dqn.config import DQN_CONFIG, DQN_TIMESTEPS
 
 
-def train_dqn(seed):
+
+
+def train_dqn(seed, total_timesteps=None, run_name="original"):
+
+    if total_timesteps is None:
+        total_timesteps = DQN_TIMESTEPS
+
+    create_project_directories()
+
     print("\n" + "=" * 50)
     print(f"STARTING DQN TRAINING | SEED {seed}")
+    print(f"TRAINING BUDGET: {total_timesteps:,}")
     print("=" * 50)
 
     env = make_space_invaders_env(
@@ -28,20 +37,20 @@ def train_dqn(seed):
     logger = ExperimentLogger(
         algorithm="dqn",
         seed=seed,
-        log_dir=LOG_DIR
+        log_dir=LOG_DIR,
+        run_name=run_name
     )
 
     eval_env = None
 
     try:
-        # Create evaluation and checkpoint callbacks
         callbacks, eval_env = make_experiment_callbacks(
             algorithm="dqn",
             seed=seed,
-            experiment_logger=logger
+            experiment_logger=logger,
+            run_name=run_name
         )
 
-        # Initialize DQN
         model = DQN(
             policy=DQN_CONFIG["policy"],
             env=env,
@@ -54,20 +63,24 @@ def train_dqn(seed):
             tensorboard_log=str(LOG_DIR / "tensorboard")
         )
 
-        print(f"\nTraining DQN for {DQN_TIMESTEPS:,} timesteps...")
-
         model.learn(
-            total_timesteps=DQN_TIMESTEPS,
+            total_timesteps=total_timesteps,
             callback=callbacks,
-            tb_log_name=f"dqn_seed_{seed}"
+            tb_log_name=f"dqn_seed_{seed}_{run_name}"
         )
 
-        # Save final model
-        model_path = DQN_MODEL_DIR / f"dqn_seed_{seed}_final"
+        filename = (
+            f"dqn_seed_{seed}_final"
+            if run_name == "original"
+            else f"dqn_seed_{seed}_{run_name}_final"
+        )
 
+        model_path = DQN_MODEL_DIR / filename
         model.save(str(model_path))
 
         print(f"\nFinal DQN model saved to: {model_path}.zip")
+
+        return model
 
     finally:
         env.close()
@@ -75,6 +88,7 @@ def train_dqn(seed):
         if eval_env is not None:
             eval_env.close()
 
+        logger.close()
 
 def main():
     create_project_directories()

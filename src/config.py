@@ -14,8 +14,12 @@ FRAME_STACK = 4
 N_ENVS = 1
 
 # Training configuration
-# Initial pilot budget, not the final research budget
+# Research Budget Timesteps
 PILOT_TIMESTEPS = 100_000
+
+# Extended training for final demonstration
+DQN_TIMESTEPS = 500_000
+PPO_TIMESTEPS = 500_000
 
 # Evaluation settings
 EVAL_FREQ = 20_000

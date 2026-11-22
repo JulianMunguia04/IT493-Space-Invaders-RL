@@ -6,12 +6,19 @@ from pathlib import Path
 
 class ExperimentLogger:
 
-    def __init__(self, algorithm, seed, log_dir):
+    def __init__(self, algorithm, seed, log_dir, run_name="original"):
 
         self.algorithm = algorithm
         self.seed = seed
+        self.run_name = run_name
 
-        self.log_dir = Path(log_dir) / algorithm / f"seed_{seed}"
+        self.log_dir = (
+            Path(log_dir)
+            / algorithm
+            / f"seed_{seed}"
+            / run_name
+        )
+
         self.log_dir.mkdir(parents=True, exist_ok=True)
 
         self.csv_path = self.log_dir / "training_metrics.csv"
@@ -48,6 +55,7 @@ class ExperimentLogger:
 
     def close(self):
 
-        self.file.close()
+        if not self.file.closed:
+            self.file.close()
 
         print(f"Experiment logs saved to: {self.csv_path}")

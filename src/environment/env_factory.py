@@ -11,7 +11,8 @@ def make_space_invaders_env(
     seed=42,
     monitor_dir=None,
     clip_reward=True,
-    terminal_on_life_loss=True
+    terminal_on_life_loss=True,
+    render_mode=None
 ):
     """
     Create a preprocessed Space Invaders environment.
@@ -29,19 +30,28 @@ def make_space_invaders_env(
     Evaluation:
     - Reward clipping disabled
     - Life-loss termination disabled
+
+    Rendering:
+    - None: run without a visible game window
+    - "human": display the game window
     """
 
     gym.register_envs(ale_py)
+
+    env_kwargs = {
+        "frameskip": 1,
+        "repeat_action_probability": 0.0
+    }
+
+    if render_mode is not None:
+        env_kwargs["render_mode"] = render_mode
 
     env = make_atari_env(
         "ALE/SpaceInvaders-v5",
         n_envs=n_envs,
         seed=seed,
         monitor_dir=monitor_dir,
-        env_kwargs={
-            "frameskip": 1,
-            "repeat_action_probability": 0.0
-        },
+        env_kwargs=env_kwargs,
         wrapper_kwargs={
             "screen_size": 84,
             "frame_skip": 4,
