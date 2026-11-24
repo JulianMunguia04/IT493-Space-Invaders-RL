@@ -381,3 +381,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# Run File in Powershell from root
+# .\venv\Scripts\Activate.ps1
+# python run_project.py
