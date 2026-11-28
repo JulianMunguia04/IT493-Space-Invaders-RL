@@ -4,11 +4,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
-# --------------------------------------------------
-# PATHS
-# --------------------------------------------------
-
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 RESULTS_DIR = PROJECT_ROOT / "results"
@@ -19,11 +14,6 @@ SEED_SUMMARY_FILE = RESULTS_DIR / "seed_summary.csv"
 EVALUATION_FILE = RESULTS_DIR / "evaluation_details.csv"
 
 GRAPH_DIR.mkdir(parents=True, exist_ok=True)
-
-
-# --------------------------------------------------
-# LOAD DATA
-# --------------------------------------------------
 
 learning_curves = pd.read_csv(LEARNING_CURVE_FILE)
 seed_summary = pd.read_csv(SEED_SUMMARY_FILE)
@@ -36,11 +26,6 @@ algorithm_labels = {
 }
 
 print("Research datasets loaded successfully.")
-
-
-# --------------------------------------------------
-# GRAPH 1: LEARNING CURVES
-# --------------------------------------------------
 
 def generate_learning_curves():
 
@@ -101,11 +86,6 @@ def generate_learning_curves():
     plt.close(fig)
 
     print("Generated: learning_curves.png")
-
-
-# --------------------------------------------------
-# GRAPH 2: FINAL PERFORMANCE
-# --------------------------------------------------
 
 def generate_final_performance():
 
@@ -169,11 +149,6 @@ def generate_final_performance():
     plt.close(fig)
 
     print("Generated: final_performance.png")
-
-
-# --------------------------------------------------
-# GRAPH 3: INDIVIDUAL SEED PERFORMANCE
-# --------------------------------------------------
 
 def generate_seed_performance():
 
@@ -261,11 +236,6 @@ def generate_seed_performance():
 
     print("Generated: individual_seed_performance.png")
 
-
-# --------------------------------------------------
-# GRAPH 4: EVALUATION STABILITY
-# --------------------------------------------------
-
 def generate_evaluation_stability():
 
     # Calculate the standard deviation of the three
@@ -345,11 +315,6 @@ def generate_evaluation_stability():
     plt.close(fig)
 
     print("Generated: evaluation_stability.png")
-
-
-# --------------------------------------------------
-# MAIN
-# --------------------------------------------------
 
 def main():
 

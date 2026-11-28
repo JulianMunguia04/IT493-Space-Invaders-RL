@@ -68,8 +68,6 @@ The interactive menu provides the following options:
 | 5 | Evaluate and Compare | Evaluate both agents over 10 episodes and compare their rewards |
 | 0 | Exit | Close the program |
 
-**Note:** The gameplay and evaluation options use the included trained models. Extended training is optional and may take several minutes or longer depending on your hardware. The extended 500,000-timestep runs are separate from the original 100,000-timestep experiments described below.
-
 ---
 
 **# 🎮 A Comparative Study of DQN and PPO for Pixel-Based Reinforcement Learning with Saliency Map Analysis**
@@ -336,16 +334,9 @@ IT493-Space-Invaders-RL/
 
 ├── gameplay/
 
-│   ├── dqn/
+    ├── dqn/
 
-│   └── ppo/
-
-│
-
-└── reports/
-
-    └── figures/
-
+    └── ppo/
 \`\`\`
 
 

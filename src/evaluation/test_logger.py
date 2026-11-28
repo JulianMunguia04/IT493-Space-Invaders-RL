@@ -11,7 +11,6 @@ def main():
         log_dir=LOG_DIR
     )
 
-    # Simulated episode data
     logger.log_episode(1000, 120.0, 450)
     logger.log_episode(2000, 150.0, 520)
     logger.log_episode(3000, 180.0, 600)

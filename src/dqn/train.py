@@ -14,9 +14,6 @@ from src.evaluation.experiment_callbacks import make_experiment_callbacks
 
 from src.dqn.config import DQN_CONFIG, DQN_TIMESTEPS
 
-
-
-
 def train_dqn(seed, total_timesteps=None, run_name="original"):
 
     if total_timesteps is None:

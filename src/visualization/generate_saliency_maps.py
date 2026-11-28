@@ -11,11 +11,6 @@ from stable_baselines3.common.vec_env import VecTransposeImage
 from src.config import PROJECT_ROOT
 from src.environment.env_factory import make_space_invaders_env
 
-
-# --------------------------------------------------
-# Configuration
-# --------------------------------------------------
-
 DEVICE = "cpu"
 
 DQN_PATH = (
@@ -30,13 +25,7 @@ PPO_PATH = (
 
 OUTPUT_DIR = PROJECT_ROOT / "results" / "saliency_maps"
 
-# Capture observations at these points in the PPO gameplay sequence.
 CAPTURE_STEPS = [0, 100, 300, 500]
-
-
-# --------------------------------------------------
-# Collect common game observations
-# --------------------------------------------------
 
 def collect_observations(ppo_model, env):
     """
@@ -64,11 +53,6 @@ def collect_observations(ppo_model, env):
 
     return captured
 
-
-# --------------------------------------------------
-# Calculate gradient-based saliency
-# --------------------------------------------------
-
 def calculate_saliency(model, observation, algorithm):
     """
     Calculate the absolute input gradients for the selected action.
@@ -79,8 +63,6 @@ def calculate_saliency(model, observation, algorithm):
 
     input_tensor, _ = model.policy.obs_to_tensor(observation)
 
-    # Convert image observations to floating point so gradients
-    # can be calculated with respect to the input pixels.
     input_tensor = (
         input_tensor.float()
         .detach()
@@ -115,25 +97,16 @@ def calculate_saliency(model, observation, algorithm):
         inputs=input_tensor
     )[0]
 
-    # Combine the four stacked grayscale frames into one
-    # spatial saliency map.
     saliency = gradients.abs().sum(dim=1)[0]
 
     saliency = saliency.detach().cpu().numpy()
 
-    # Normalize using a high percentile to reduce the influence
-    # of extreme gradient values.
     upper_limit = np.percentile(saliency, 99.5)
 
     if upper_limit > 0:
         saliency = np.clip(saliency / upper_limit, 0, 1)
 
     return saliency, selected_action
-
-
-# --------------------------------------------------
-# Generate visualization
-# --------------------------------------------------
 
 def generate_maps(dqn_model, ppo_model, observations):
 
@@ -156,9 +129,6 @@ def generate_maps(dqn_model, ppo_model, observations):
                 algorithm
             )
 
-            # VecTransposeImage gives shape:
-            # (environment, stacked_frames, height, width)
-            # The last frame is the newest frame.
             game_frame = observation[0, -1]
 
             all_maps[label].append({
@@ -174,11 +144,6 @@ def generate_maps(dqn_model, ppo_model, observations):
             )
 
     return all_maps
-
-
-# --------------------------------------------------
-# Save individual algorithm visualizations
-# --------------------------------------------------
 
 def save_algorithm_grid(all_maps, algorithm):
 
@@ -236,11 +201,6 @@ def save_algorithm_grid(all_maps, algorithm):
     plt.close(fig)
 
     print(f"Saved: {filename}")
-
-
-# --------------------------------------------------
-# Save direct DQN vs PPO comparison
-# --------------------------------------------------
 
 def save_comparison(all_maps):
 
@@ -306,11 +266,6 @@ def save_comparison(all_maps):
     plt.close(fig)
 
     print(f"Saved: {filename}")
-
-
-# --------------------------------------------------
-# Main
-# --------------------------------------------------
 
 def main():
 

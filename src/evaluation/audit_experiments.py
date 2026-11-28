@@ -72,7 +72,6 @@ def audit_experiments():
                 / "best" / "best_model.zip"
             )
 
-            # Check required files
             required_files = {
                 "Evaluation data": evaluation_path,
                 "Training log": training_log_path,

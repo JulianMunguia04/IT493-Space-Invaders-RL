@@ -43,7 +43,6 @@ def main():
     print("\nObservation shape:", observation.shape)
     print("Observation dtype:", observation.dtype)
 
-    # Convert the same observation for both models.
     dqn_tensor, _ = dqn.policy.obs_to_tensor(observation)
     ppo_tensor, _ = ppo.policy.obs_to_tensor(observation)
 

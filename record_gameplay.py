@@ -11,11 +11,6 @@ from stable_baselines3.common.vec_env import VecTransposeImage
 
 from src.environment.env_factory import make_space_invaders_env
 
-
-# --------------------------------------------------
-# CONFIGURATION
-# --------------------------------------------------
-
 PROJECT_ROOT = Path(__file__).resolve().parent
 
 VIDEO_DIR = PROJECT_ROOT / "results" / "gameplay"
@@ -29,11 +24,6 @@ MODELS = {
     "DQN": PROJECT_ROOT / "models/dqn/dqn_seed_42_extended_final.zip",
     "PPO": PROJECT_ROOT / "models/ppo/ppo_seed_42_extended_final.zip",
 }
-
-
-# --------------------------------------------------
-# RECORD GAMEPLAY
-# --------------------------------------------------
 
 def record_agent(algorithm, model_path):
 
@@ -51,7 +41,6 @@ def record_agent(algorithm, model_path):
 
     print(f"Loaded {algorithm} successfully.")
 
-    # Create visible Atari environment
     env = make_space_invaders_env(
         n_envs=1,
         seed=SEED,
@@ -60,7 +49,6 @@ def record_agent(algorithm, model_path):
         render_mode="rgb_array",
     )
 
-    # Match image layout expected by the trained CNN policy
     env = VecTransposeImage(env)
 
     video_path = VIDEO_DIR / f"{algorithm.lower()}_500k.mp4"
@@ -89,7 +77,6 @@ def record_agent(algorithm, model_path):
                 total_reward += float(rewards[0])
                 done = bool(dones[0])
 
-                # Capture original Atari frame
                 frame = env.venv.envs[0].render()
 
                 if frame is not None:
@@ -133,11 +120,6 @@ def record_agent(algorithm, model_path):
     print(f"Video duration: {len(all_frames) / FPS:.1f} seconds")
 
     return video_path
-
-
-# --------------------------------------------------
-# MAIN
-# --------------------------------------------------
 
 if __name__ == "__main__":
 

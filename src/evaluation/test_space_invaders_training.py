@@ -23,8 +23,6 @@ def test_dqn():
 
     callback = TrainingLoggerCallback(logger)
 
-    # Temporary settings for the pilot test.
-    # These allow DQN to start learning within 1,000 timesteps.
     dqn_test_config = {
         key: value
         for key, value in DQN_CONFIG.items()

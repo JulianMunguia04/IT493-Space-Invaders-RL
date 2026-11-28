@@ -1,7 +1,6 @@
 
 from src.environment.env_factory import make_space_invaders_env
 
-
 def main():
 
     print("Creating preprocessed Space Invaders environment...")
@@ -20,13 +19,11 @@ def main():
         print("Minimum pixel value:", observation.min())
         print("Maximum pixel value:", observation.max())
 
-        # Verify observation dimensions
         assert observation.shape == (1, 84, 84, 4)
         assert observation.dtype.name == "uint8"
 
         print("\nPreprocessing verification passed!")
 
-        # Test 10 random actions
         for step in range(10):
 
             action = [env.action_space.sample()]

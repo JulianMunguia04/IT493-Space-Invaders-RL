@@ -11,7 +11,6 @@ def main():
     try:
         observation = env.reset()
 
-        # Advance the game using random actions
         for step in range(100):
             action = [env.action_space.sample()]
 
@@ -20,10 +19,8 @@ def main():
             if dones[0]:
                 observation = env.reset()
 
-        # Extract the four stacked frames
         frames = observation[0]
 
-        # Display each frame separately
         fig, axes = plt.subplots(1, 4, figsize=(14, 4))
 
         for i in range(4):

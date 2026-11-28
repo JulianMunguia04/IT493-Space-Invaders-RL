@@ -1,4 +1,3 @@
-
 from stable_baselines3.common.callbacks import (
     CallbackList,
     CheckpointCallback,
@@ -18,8 +17,6 @@ from src.config import (
 
 from src.environment.env_factory import make_space_invaders_env
 from src.evaluation.training_callback import TrainingLoggerCallback
-
-
 
 def make_experiment_callbacks(
     algorithm,
@@ -62,8 +59,6 @@ def make_experiment_callbacks(
         raise ValueError(
             "Evaluation and checkpoint settings must be positive."
         )
-
-    # Unique directory for this algorithm, seed, and experiment
     run_model_dir = (
         MODEL_DIR
         / algorithm
@@ -86,7 +81,6 @@ def make_experiment_callbacks(
     checkpoint_dir.mkdir(parents=True, exist_ok=True)
     evaluation_log_dir.mkdir(parents=True, exist_ok=True)
 
-    # Separate evaluation environment
     eval_env = make_space_invaders_env(
         n_envs=1,
         seed=seed + 10_000,

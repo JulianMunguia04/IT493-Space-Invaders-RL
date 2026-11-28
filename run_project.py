@@ -19,22 +19,12 @@ from src.environment.env_factory import make_space_invaders_env
 from src.dqn.train import train_dqn as train_dqn_model
 from src.ppo.train import train_ppo as train_ppo_model
 
-
-# ============================================================
-# PROJECT SETTINGS
-# ============================================================
-
 SEED = 42
 
 EXTENDED_TIMESTEPS = 500_000
 
 DEMONSTRATION_EPISODES = 3
 EVALUATION_EPISODES = 10
-
-
-# ============================================================
-# MODEL PATHS
-# ============================================================
 
 def get_model_path(algorithm, prefer_extended=True):
     """
@@ -70,11 +60,6 @@ def get_model_path(algorithm, prefer_extended=True):
         f"No trained {algorithm.upper()} model was found.\n"
         f"Expected: {original_path}"
     )
-
-
-# ============================================================
-# TRAINING
-# ============================================================
 
 def train_dqn():
     """Train an extended DQN model."""
@@ -118,11 +103,6 @@ def train_ppo():
     )
 
     return model
-
-
-# ============================================================
-# GAMEPLAY DEMONSTRATION
-# ============================================================
 
 def play_model(algorithm, episodes=DEMONSTRATION_EPISODES):
     """
@@ -202,11 +182,6 @@ def play_ppo():
     """Watch the PPO agent play Space Invaders."""
 
     play_model("ppo")
-
-
-# ============================================================
-# EVALUATION AND COMPARISON
-# ============================================================
 
 def evaluate_model(algorithm):
     """
@@ -318,10 +293,7 @@ def evaluate_and_demonstrate():
         "ppo": ppo_results
     }
 
-
-# ============================================================
-# TERMINAL MENU
-# ============================================================
+# Terminal Menu
 
 def main():
 

@@ -53,7 +53,6 @@ def main():
                 f"Seed 2026: {actions[2026]}"
             )
 
-            # Advance the environment using seed 42's action.
             observation, rewards, dones, infos = env.step(
                 np.array([actions[42]])
             )

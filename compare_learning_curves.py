@@ -5,7 +5,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-# Project paths
 PROJECT_ROOT = Path(__file__).resolve().parent
 
 DQN_EVAL_PATH = (
@@ -33,7 +32,6 @@ def load_evaluation_data(path, algorithm):
     timesteps = data["timesteps"]
     episode_rewards = data["results"]
 
-    # Average reward and standard deviation at each checkpoint
     mean_rewards = np.mean(episode_rewards, axis=1)
     std_rewards = np.std(episode_rewards, axis=1)
 
