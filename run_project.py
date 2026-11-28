@@ -355,5 +355,6 @@ if __name__ == "__main__":
     main()
 
 # Run File in Powershell from root
+# Follow README "Getting Started"
 # .\venv\Scripts\Activate.ps1
 # python run_project.py
